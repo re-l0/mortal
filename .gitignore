@@ -1,0 +1,12 @@
+node_modules/
+.data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+dist/
+.DS_Store
