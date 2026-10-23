@@ -1,24 +1,40 @@
-# Mortal — Life as an RPG
+# Mortal — Your life as an RPG
 
-Mortal turns goals, habits, and daily activities into a personalized life-progression experience.
+**Mortal is the full application, not a static preview.** It includes the interactive dashboard, 10 life areas, personalized scoring, category analytics, quests, XP, achievements, account onboarding, activity logs and persistence.
 
-## Cloudflare Pages preview
+- **Web app:** `public/` — frontend UI, PWA assets, original Mortal skull icon, scoring engine
+- **Cloudflare backend:** `functions/api/[[path]].js` — account, session, and state APIs backed by **D1**
+- **Database schema:** `migrations/0001_init.sql`
+- **Local Node backend:** `server.mjs` — maintains compatibility with locally hosted beta accounts and SQLite
+- **Tests:** `tests/` — scoring checks and deployment checks
 
-This repository currently contains the **Mortal Beta 1.1 interactive demo** for static hosting. It uses fictional demonstration information and is separate from production account data.
+## Deploy the FULL application on Cloudflare Pages
 
-To deploy with [Cloudflare Pages](https://dash.cloudflare.com/):
-1. Open **Workers & Pages → Create application → Pages → Connect to Git**.
-2. Authorize GitHub if Cloudflare requests access, and select `re-l0/mortal`.
-3. Select production branch `main`.
-4. Select **None** as framework, build command `exit 0` and output directory `cloudflare-preview`.
-5. Deploy. Changes merged to `main` will trigger future deployments.
+**[Follow CLOUDFLARE_DEPLOY.md](CLOUDFLARE_DEPLOY.md)**. The Cloudflare Git deployment settings are:
 
-**Important:** The static preview does not host the Node.js/SQLite server, authentication API, or production data. The full application needs a Cloudflare-compatible backend and durable persistence (for example Workers + D1) before a real-user launch.
+| Setting | Value |
+|---|---|
+| GitHub repository | `re-l0/mortal` |
+| Production branch | `main` |
+| Framework preset | None |
+| Build command | `exit 0` |
+| Output directory | `public` |
+| Root directory | Repository root |
 
-## Source workflow
+Create a D1 database named `mortal-db`, execute the SQL migration, then bind it in Cloudflare Pages under variable name **DB** and redeploy. Once GitHub integration is active, commits merged into main deploy automatically.
 
-Use pull requests for changes, preview them on Cloudflare, and merge reviewed changes to `main` for production deployment.
+**Do not use `.` as a build command or output directory.** It is not a build command, and publishing the repository root could expose internal source, migrations and configuration files. Cloudflare Pages automatically loads the root `functions/` directory for API endpoints.
 
-## Privacy
+## Local development
 
-The repository was reported by GitHub as **public** when first checked on October 23, 2026. Do not add sensitive profiles, secrets, `.env` files, or SQLite databases.
+Node.js 22.5+ is required for the local server (built-in SQLite). Run:
+
+`npm start`
+
+Then open `http://localhost:3000`. Run `npm test` for scoring checks.
+
+## Data and security
+
+- New Cloudflare accounts live in D1 and are separate from any locally hosted SQLite accounts. Export/import JSON in the app to migrate profile data manually.
+- Personal data and passwords must never be committed to the GitHub repository; `.gitignore` excludes local databases and secrets.
+- This remains a beta. Before a broad public-user launch, add rate limiting, password recovery, email verification, backups, monitoring, and independent security review. Sensitive health/finance information should not be entered until production safeguards are established.
