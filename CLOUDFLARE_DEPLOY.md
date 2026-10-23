@@ -25,6 +25,12 @@ Configure:
 
 **Do not choose** `cloudflare-preview`, and **do not choose** `.` as either setting. Cloudflare automatically recognizes the root `functions/` directory and bundles the API routes.
 
+## Beta-only signups (required)
+
+Mortal accepts new accounts **only** for email addresses listed in a Pages environment variable. In the Pages project, open **Settings → Variables and Secrets**, add a text variable named `BETA_ALLOWED_EMAILS` with your own email address as its value. When inviting your two beta testers, separate the permitted addresses with commas, such as `me@example.com,friend1@example.com,friend2@example.com` (example only). Redeploy after changes. If the variable is unset, new signups are blocked; existing accounts can still log in.
+
+This is a small beta gate, **not** full identity verification. An allowlisted email address alone does not prove the registering person controls that mailbox. Do not use real sensitive health or finance data before email verification and further security controls are implemented.
+
 ## Step 3 — Bind the database
 On the Pages project, open **Settings → Bindings → Add binding → D1 database**, select **mortal-db**, set variable name **DB** (uppercase), and save. If the app is already deployed, **redeploy** so the binding is active.
 
