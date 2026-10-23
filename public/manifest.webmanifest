@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "Mortal",
+  "short_name": "Mortal",
+  "description": "Your life as a personalized RPG. Make real progress, earn experience, and write your own story.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090b18",
+  "theme_color": "#121026",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
