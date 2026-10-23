@@ -77,6 +77,9 @@ async function handle({request,env}) {
   if (p==='/api/signup' && method==='POST') {
     const payload=await body(request),email=String(payload.email||'').trim().toLowerCase(),password=String(payload.password||''),name=String(payload.name||'').trim().slice(0,60);
     if (!/^\S+@\S+\.\S+$/.test(email) || password.length<10 || password.length>128) return json({error:'Enter an email and a password with at least 10 characters.'},400);
+    // Small beta: sign-up stays closed until the owner specifies permitted emails in Cloudflare.
+    const allowedEmails=String(env.BETA_ALLOWED_EMAILS||'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
+    if (!allowedEmails.includes(email)) return json({error:'Mortal is currently an invite-only beta. Ask the project owner for access.'},403);
     if (await db.prepare('SELECT id FROM users WHERE email=?').bind(email).first()) return json({error:'An account with this email already exists.'},409);
     const id=crypto.randomUUID(),state=makeBlankState(name),now=new Date().toISOString();
     try { await db.batch([
